@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Профили пользователей
+    match /users/{userId} {
+      // Читать профили может любой залогиненный пользователь
+      // (нужно для поиска собеседника по email и показа имени в чате)
+      allow read: if request.auth != null;
+
+      // Создавать и редактировать можно только свой собственный профиль
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.email == request.auth.token.email;
+
+      allow update: if request.auth != null
+                    && request.auth.uid == userId;
+
+      allow delete: if false;
+    }
+
+    // Чаты
+    match /chats/{chatId} {
+      // Читать/изменять чат можно только если ты его участник
+      allow read: if request.auth != null
+                  && request.auth.uid in resource.data.participants;
+
+      // Создать чат можно, только если сам себя добавляешь в участники
+      // и в чате ровно 2 участника (личный чат)
+      allow create: if request.auth != null
+                    && request.auth.uid in request.resource.data.participants
+                    && request.resource.data.participants.size() == 2;
+
+      // Обновлять (lastMessage, updatedAt) может только участник чата,
+      // и нельзя менять список участников после создания
+      allow update: if request.auth != null
+                    && request.auth.uid in resource.data.participants
+                    && request.resource.data.participants == resource.data.participants;
+
+      allow delete: if false;
+
+      // Сообщения внутри чата
+      match /messages/{messageId} {
+        // Читать сообщения может только участник родительского чата
+        allow read: if request.auth != null
+                    && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants;
+
+        // Отправлять сообщение можно только от своего имени
+        // и только если ты участник чата
+        allow create: if request.auth != null
+                      && request.auth.uid == request.resource.data.senderId
+                      && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants;
+
+        // Редактировать/удалять может только автор сообщения
+        allow update, delete: if request.auth != null
+                      && request.auth.uid == resource.data.senderId;
+      }
+    }
+  }
+}
