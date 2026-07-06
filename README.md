@@ -1,58 +1,23 @@
-# Selenga
+Selenga — минимальный веб-мессенджер
 
-Мессенджер на чистом HTML/CSS/JS с бэкендом на Firebase (Authentication + Firestore).
-Никакого собственного сервера для данных не нужно — вся логика чата работает прямо в браузере пользователя.
+Файлы:
+- index.html — интерфейс чата и авторизация/регистрация
+- admin.html — админ-панель (только для пользователя с логином `Lentini`)
+- app.js — клиентская логика (Firebase init, auth, чат)
+- admin.js — логика админ-панели
+- styles.css — стили
 
-## Структура проекта
-
-```
-selenga/
-├── index.html          # всё приложение: разметка, стили, логика, подключение Firebase
-├── firestore.rules      # правила безопасности базы данных Firestore
-├── package.json          # нужен только для деплоя как Node Web Service (см. ниже)
-├── server.js            # минимальный сервер, который отдаёт index.html (тоже только для Node-варианта)
-└── README.md
-```
-
-## Настройка Firebase (один раз)
-
-1. console.firebase.google.com → создать проект.
-2. Authentication → Sign-in method → включить **Email/Password**.
-3. Firestore Database → создать базу.
-4. Firestore Database → Rules → вставить содержимое `firestore.rules` → Publish.
-5. Project settings → добавить веб-приложение → скопировать `firebaseConfig`.
-6. Открыть `index.html`, найти в самом низу `const firebaseConfig = {...}` и вставить свои значения.
-
-## Деплой на Render
-
-Файл — статичный сайт, серверный код (Node/npm) ему не нужен. Есть два способа.
-
-### Вариант A — Static Site (рекомендуется)
-
-1. Render → New → **Static Site**.
-2. Подключить репозиторий.
-3. Build Command — оставить пустым.
-4. Publish Directory — `.` (если `index.html` лежит в корне репозитория).
-5. Deploy.
-
-### Вариант B — Web Service на Node
-
-Использует `package.json` и `server.js` из этого проекта.
-
-1. Render → New → **Web Service**.
-2. Build Command: `npm install`
-3. Start Command: `npm start`
-4. Deploy.
-
-Сервер ничего не хранит — он лишь отдаёт `index.html` браузеру; все данные пользователей идут напрямую в Firebase.
-
-## Локальный запуск
-
-Можно просто открыть `index.html` в браузере двойным кликом, либо поднять сервер:
+Запуск локально:
+1) Откройте папку `d:/acode` в терминале.
+2) Запустите простой HTTP-сервер (рекомендуется). Например, Python 3:
 
 ```bash
-npm install
-npm start
+python -m http.server 8000
 ```
 
-и зайти на `http://localhost:3000`.
+3) Откройте в браузере `http://localhost:8000/index.html`.
+
+Примечания:
+- Для корректной работы ES-модулей страницы должны обслуживаться по HTTP(S), а не открываться напрямую через `file://`.
+- Админ-панель доступна только если пользователь вошёл и его логин (`displayName`) равен `Lentini`.
+- Этот пример использует Firestore для хранения сообщений и Email/Password для аутентификации.
