@@ -1,6 +1,3 @@
-# Gradle build artifacts
-.gradle/
-build/
-
-# Gradle wrapper JAR (binary, not source)
-gradle/wrapper/gradle-wrapper.jar
+target/
+.idea/
+*.iml

@@ -1,0 +1,100 @@
+# ============================================================
+#  RickAndMortyPlugin — config.yml
+#  Все настройки плагина. После правок: /rick reload
+# ============================================================
+
+# --- Ресурспак с 3D-моделями -------------------------------
+resource_pack:
+  # URL zip-архива ресурспака (Dropbox direct link / GitHub raw / self-host)
+  enabled: true
+  url: "https://example.com/rickmorty-pack.zip"
+  # SHA1-хэш архива (hex, без префикса). Получить: sha1sum pack.zip
+  hash: ""
+  # Просить пакет при входе игрока (player.setResourcePack)
+  request_on_join: true
+  # Принудительно (Paper API: кик при отказе). false = просто запрос
+  force: false
+  message: "&aРик установил тебе ресурспак. Не благодари."
+
+# --- Валюта "Шмекли" ---------------------------------------
+economy:
+  currency_name: "Шмекль"
+  currency_name_plural: "Шмеклей"
+  # Стартовый баланс при первом входе
+  starting_balance: 50
+  # Выдача за убийство мобов плагина (за каждого)
+  kill_reward:
+    meeseeks: 5
+    pickle_rick: 25
+  # Еженедельный (/rick claim или автовыдача при входе раз в N минут)
+  daily_bonus: 20
+
+# --- Торговля (цены в шмеклях) ------------------------------
+shop:
+  rick:
+    portal_gun: 150
+    mega_seeds: 40
+    flask: 25
+    plumbus: 10
+    snowball_pet: 80
+  buyback_enabled: true   # можно ли продавать предметы Рику обратно (50% цены)
+
+# --- Команда /rick portal ----------------------------------
+portal:
+  # Куда телепортировать: RANDOM_OFFSET — сдвиг на offset блоков;
+  # CITADEL — мир "Citadel" (создаётся автоматически)
+  mode: "CITADEL"
+  world_name: "Citadel"
+  # Случайное смещение в блоках, если mode=RANDOM_OFFSET
+  random_offset: 1000
+
+# --- Портальная пушка --------------------------------------
+portal_gun:
+  max_distance: 64          # дальность луча для установки портала
+  cooldown_seconds: 3       # кулдаун между открытиями порталов
+  teleport_delay_ticks: 5   # задержка телепорта при входе в портал
+  pair_lifetime_seconds: 120 # время жизни пары порталов (0 = бессмертные)
+
+# --- Мега-семена ---------------------------------------------
+mega_seeds:
+  duration_seconds: 60
+  speed_amplifier: 2
+  strength_amplifier: 1
+  cooldown_seconds: 180
+
+# --- Фляга Рика ------------------------------------------------
+flask:
+  effects_pool: ["SPEED", "STRENGTH", "REGENERATION", "NIGHT_VISION", "WATER_BREATHING", "INVISIBILITY", "CONFUSION", "HARM"]
+  min_duration_seconds: 10
+  max_duration_seconds: 45
+
+# --- Спавн мобов по биомам/времени ----------------------------
+natural_spawn:
+  enabled: true
+  check_interval_seconds: 30
+  max_entities_per_world: 12
+  # Вероятность спавна за одну проверку (0.0–1.0), суммарно не больше 1 моба за тик
+  chances:
+    mr_meeseeks: 0.35     # день, равнины/лес/пустыня
+    pickle_rick: 0.10     # ночь, болото
+    snow_ball: 0.15       # снег, любое время
+
+# --- NPC-диалоги (поддерживаются &-коды цвета) ---------------
+dialogues:
+  rick_greeting:
+    - "&b[Rick] &fWubba lubba dub dub! Что нужно, %player%?"
+    - "&b[Rick] &fТорговля открыта. И нет, я не возвращаю сдачу."
+    - "&b[Rick] &f*рыгает* Да, это был репутационный удар по мне, а не по тебе."
+  morty_greeting:
+    - "&a[Morty] &fОх, geez... привет, %player%."
+    - "&a[Morty] &fЯ буду следовать за тобой. Надеюсь, это безопасно?"
+  meeseeks_attack:
+    - "&e[Meeseeks] &fI'm Mr. Meeseeks! Look at me!"
+    - "&e[Meeseeks] &fExistence is pain to a Meeseeks, Jerry!"
+  pickle_rick_greeting:
+    - "&5[Pickle Rick] &fNobody's getting picked on today, baby!"
+  shop_intro: "&b[Rick] &fВыбирай. У меня измерений на продажу больше, чем у тебя шмеклей."
+
+# --- Прочее ----------------------------------------------------
+debug: false
+prefix: "&8[&bRick&Morty&8]&r "
