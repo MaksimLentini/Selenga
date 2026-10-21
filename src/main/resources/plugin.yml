@@ -1,0 +1,28 @@
+name: RickAndMortyPlugin
+main: com.rickmorty.plugin.core.RickAndMortyPlugin
+version: '${project.version}'
+api-version: '1.20'
+author: RickSanchezFan
+description: Персонажи вселенной Рика и Морти: NPC, мобы, портальная пушка, валюта "Шмекли", 3D-модели через ресурспак.
+depend: []
+softdepend:
+  - ProtocolLib
+  - ModelEngine
+  - ItemsAdder
+
+commands:
+  rick:
+    description: Главная команда плагина Rick and Morty
+    usage: /rick <spawn|portal|give|reload|help>
+    aliases: [rm, rickandmorty]
+    permission: rickandmorty.use
+
+permissions:
+  rickandmorty.use:
+    description: Базовое использование команды /rick
+    default: true
+  rickandmorty.admin:
+    description: Спавн мобов, выдача предметов, перезагрузка конфига
+    default: op
+    children:
+      rickandmorty.use: true
